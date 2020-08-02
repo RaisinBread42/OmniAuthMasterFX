@@ -158,6 +158,10 @@ C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netco
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\System.Web.Http.dll
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\obj\Debug\netcoreapp3.1\OmniAuthMasterFX.csproj.CoreCompileInputs.cache
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\obj\Debug\netcoreapp3.1\OmniAuthMasterFX.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\computer\source\repos\OmniAuthMasterFX\OmniAuthMasterFX\obj\Debug\netcoreapp3.1\OmniAuthMasterFX.MvcApplicationPartsAssemblyInfo.cache

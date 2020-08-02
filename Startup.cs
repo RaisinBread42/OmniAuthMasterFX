@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using OmniAuthMasterFX.Identity;
 using OmniAuthMasterFX.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace OmniAuthMasterFX
 {
@@ -65,9 +67,22 @@ namespace OmniAuthMasterFX
                 // name of the API resource
                 options.Audience = "api1";
                 options.RequireHttpsMetadata = false;
-            });
+            })
+            .AddCookie();
+
+            services.AddAuthorization(options =>
+           {
+               options.AddPolicy("Cookie", policy =>
+               {
+                   policy.RequireAuthenticatedUser();
+                   policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
+               });
+           });
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
+            services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +104,15 @@ namespace OmniAuthMasterFX
                 endpoints.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http.ModelBinding;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +15,7 @@ using OmniAuthMasterFX.RequestsParams;
 
 namespace OmniAuthMasterFX.Controllers
 {
+    [Route("api/[controller]")]
     public class AccountController : ApiController
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -85,10 +90,66 @@ namespace OmniAuthMasterFX.Controllers
             if (u != null)
             {
                 var result = await _signInManager.CheckPasswordSignInAsync(u, model.Password, false);
+                if (result.Succeeded)
+                {
+                    var claims = new List<Claim>() { 
+                    new Claim(ClaimTypes.Email, model.Email),
+                    new Claim(ClaimTypes.Name, model.Username),
+                    new Claim(ClaimTypes.Role, "Basic User"), // to replace with actual roles in DB
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        // Refreshing the authentication session should be allowed.
+
+                        //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                        // The time at which the authentication ticket expires. A 
+                        // value set here overrides the ExpireTimeSpan option of 
+                        // CookieAuthenticationOptions set with AddCookie.
+
+                        //IsPersistent = true,
+                        // Whether the authentication session is persisted across 
+                        // multiple requests. When used with cookies, controls
+                        // whether the cookie's lifetime is absolute (matching the
+                        // lifetime of the authentication ticket) or session-based.
+
+                        //IssuedUtc = <DateTimeOffset>,
+                        // The time at which the authentication ticket was issued.
+
+                        //RedirectUri = <string>
+                        // The full path or absolute URI to be used as an http 
+                        // redirect response value.
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+                }
                 return Ok(result);
             }
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("testauth")]
+        [Authorize(Policy = "Cookie")]
+        public ActionResult<int> TestAuthMethod()
+        {
+            return 1;
+        }
+
+        [HttpGet]
+        [Route("testauth2")]
+        [Authorize]
+        public ActionResult<int> TestAuthMethod2()
+        {
+            return 1;
         }
     }
 }
